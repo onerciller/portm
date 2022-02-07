@@ -82,7 +82,7 @@ func (ui *UI) Render() {
 func (ui *UI) menu() *tview.TextView {
 
 	menuItemMap := map[string]string{
-		"C-c | Q":     "Quit",
+		"C-c":     "Quit",
 		"Up":    "Go to Up",
 		"Down":  "Go to Down",
 		"Enter": "Select Port",
