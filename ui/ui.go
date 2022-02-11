@@ -2,6 +2,7 @@ package ui
 
 import (
 	"fmt"
+
 	"github.com/gdamore/tcell/v2"
 	"github.com/onerciller/portm/ui/modal"
 	"github.com/onerciller/portm/ui/ports"
@@ -58,6 +59,7 @@ func (ui *UI) Render() {
 
 	confirmModal := ui.portKillConfirmModal
 	confirmModal.SetDoneFunc(ui.onConfirmSelected)
+	confirmModal.SetPort(ui.selectedPort)
 	renderedConfirmModal := confirmModal.Render()
 
 	menu := ui.menu()
@@ -73,6 +75,13 @@ func (ui *UI) Render() {
 
 	flex.AddItem(menu, 0, 1, false)
 
+	ui.app.SetInputCapture(func(event *tcell.EventKey) *tcell.EventKey {
+		if event.Key() == tcell.KeyEsc {
+			ui.app.Stop()
+		}
+		return event
+	})
+
 	if err := ui.app.SetRoot(flex, true).
 		EnableMouse(true).Run(); err != nil {
 		panic(err)
@@ -80,12 +89,11 @@ func (ui *UI) Render() {
 }
 
 func (ui *UI) menu() *tview.TextView {
-
 	menuItemMap := map[string]string{
-		"C-c":     "Quit",
-		"Up":    "Go to Up",
-		"Down":  "Go to Down",
-		"Enter": "Select Port",
+		"C-c | Esc": "Quit",
+		"Up":        "Go to Up",
+		"Down":      "Go to Down",
+		"Enter":     "Select Port",
 	}
 
 	mText := ""

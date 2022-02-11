@@ -2,18 +2,17 @@ package ports
 
 import (
 	"fmt"
+	"strings"
+
 	"github.com/gdamore/tcell/v2"
 	"github.com/onerciller/portm/command"
 	"github.com/rivo/tview"
-	"strings"
 )
 
 type Ports struct {
-	command             command.Command
-	isPortKillModalOpen bool
-	selectedRow         command.Port
-	table               *tview.Table
-	ports               []*command.Port
+	command command.Command
+	table   *tview.Table
+	ports   []*command.Port
 }
 
 func New(command command.Command) *Ports {
@@ -64,7 +63,7 @@ func (ui *Ports) renderRows(ports []*command.Port) {
 	for r, p := range ports {
 		ui.table.SetCell(r+1, 0, tview.NewTableCell(p.Command).SetAlign(tview.AlignLeft))
 		ui.table.SetCell(r+1, 1, tview.NewTableCell(p.PID).SetAlign(tview.AlignLeft))
-		ui.table.SetCell(r+1, 2, tview.NewTableCell(p.Port).SetAlign(tview.AlignLeft))
+		ui.table.SetCell(r+1, 2, tview.NewTableCell(p.Port).SetAlign(tview.AlignLeft).SetAttributes(tcell.AttrBold))
 		ui.table.SetCell(r+1, 3, tview.NewTableCell(p.Node).SetAlign(tview.AlignLeft))
 		ui.table.SetCell(r+1, 4, tview.NewTableCell(p.Fd).SetAlign(tview.AlignLeft))
 		ui.table.SetCell(r+1, 5, tview.NewTableCell(p.PType).SetAlign(tview.AlignLeft))

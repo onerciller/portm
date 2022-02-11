@@ -1,7 +1,6 @@
 package command
 
 import (
-	"log"
 	"os/exec"
 	"regexp"
 	"strings"
@@ -25,21 +24,13 @@ func New() *Command {
 }
 
 func (c Command) ExecutePortList() []*Port {
-	out, err := exec.Command("lsof", "-PiTCP", "-sTCP:LISTEN").Output()
-
-	if err != nil {
-		log.Fatalf("Command.ExecutePortList error %s", err)
-	}
+	out, _ := exec.Command("lsof", "-PiTCP", "-sTCP:LISTEN").Output()
 
 	return c.parseOutput(out)
 }
 
 func (c Command) ExecutePortKill(port *Port) {
-	err := exec.Command("kill", "-9", port.PID).Run()
-
-	if err != nil {
-		log.Fatalf("Command.ExecutePortKill error %s", err)
-	}
+	exec.Command("kill", "-9", port.PID).Run()
 }
 
 func (c Command) parseOutput(out []byte) []*Port {
