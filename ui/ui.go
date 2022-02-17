@@ -46,6 +46,11 @@ func (ui *UI) onConfirmSelected(buttonIndex int, buttonLabel string) {
 }
 
 func (ui *UI) onPortSelected(row int, column int) {
+
+	if len(ui.ports.GetPorts()) == 0 {
+		return
+	}
+
 	ui.selectedPort = ui.ports.GetPorts()[row-1]
 	ui.isPortKillConfirmModalOpen = true
 	ui.Render()
